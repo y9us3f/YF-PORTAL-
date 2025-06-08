@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>YF-PORTAL | بوابتك لسيرفرات YF الجديدة</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* ======= متغيرات التصميم ======= */
+    :root {
+      --primary-color: #00d9ff;
+      --secondary-color: #007caa;
+      --dark-bg: #121212;
+      --card-bg: #1f1f1f;
+      --nav-bg: #1e1e1e;
+      --text-color: #eee;
+      --border-color: #333;
+      --gradient-bg: linear-gradient(90deg, #0f2027, #203a43, #2c5364);
+      --shadow: 0 0 15px rgba(0, 217, 255, 0.5);
+    }
+    
+    /* ======= إعادة تعيين عام ======= */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--dark-bg);
+      color: var(--text-color);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 2rem;
+      padding-top: 180px; /* مساحة للترويسة وشريط التنقل */
+    }
+    
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 150px; /* لمنع القطع عند الانتقال للأقسام */
+    }
+    
+    /* ======= الترويسة ======= */
+    header {
+      width: 100%;
+      background: var(--gradient-bg);
+      text-align: center;
+      padding: 2rem 1rem;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.7);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 900;
+      overflow: hidden;
+      height: 150px; /* ارتفاع ثابت للترويسة */
+      transition: transform 0.3s ease;
+    }
+    
+    header img {
+      max-width: 120px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px var(--primary-color);
+      margin-bottom: 10px;
+      transition: transform .3s;
+      border: 3px solid rgba(0, 217, 255, 0.3);
+    }
+    
+    header img:hover {
+      transform: scale(1.05);
+    }
+    
+    header h1 {
+      font-size: 2.5rem;
+      margin: 0.3rem;
+      letter-spacing: 3px;
+      color: var(--primary-color);
+      text-shadow: 0 0 8px var(--primary-color);
+    }
+    
+    header p {
+      font-size: 1.1rem;
+      margin: 0.2rem 0;
+      color: #bbb;
+    }
+    
+    .admin-badges {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-top: 0.8rem;
+    }
+    
+    .admin-badge {
+      background: rgba(0, 217, 255, 0.15);
+      padding: 0.4rem 0.8rem;
+      border-radius: 50px;
+      border: 1px solid var(--primary-color);
+      font-size: 0.85rem;
+    }
+    
+    /* ======= شريط التنقل - تم التعديل لجعله ثابتًا ======= */
+    nav {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      background-color: var(--nav-bg);
+      padding: 0.8rem;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      margin: 0 auto 2rem auto;
+      flex-wrap: wrap;
+      position: fixed;
+      top: 150px; /* أسفل الترويسة مباشرة */
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+    
+    nav.scrolled {
+      top: 10px;
+      width: 95%;
+      max-width: 95%;
+      border-radius: 0 0 10px 10px;
+    }
+    
+    nav a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 700;
+      padding: 8px 15px;
+      border: 2px solid var(--primary-color);
+      border-radius: 8px;
+      transition: all .3s;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    nav a:hover {
+      background: var(--primary-color);
+      color: #000;
+      box-shadow: 0 0 8px rgba(0, 217, 255, 0.7);
+    }
+    
+    /* زر الانضمام في شريط التنقل */
+    .join-link {
+      background: var(--primary-color);
+      color: #000;
+      font-weight: 800;
+      box-shadow: 0 0 20px rgba(0, 217, 255, 0.7);
+    }
+    
+    .join-link:hover {
+      background: var(--secondary-color);
+      box-shadow: 0 0 25px rgba(0, 124, 170, 0.9);
+      color: #fff;
+    }
+    
+    /* ======= المحتوى الرئيسي ======= */
+    main {
+      max-width: 900px;
+      width: 95%;
+      background: var(--card-bg);
+      border-radius: 15px;
+      padding: 2rem 2.5rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 3rem;
+      margin-top: 70px; /* مساحة لشريط التنقل */
+    }
+    
+    section {
+      margin-bottom: 3rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1.8rem;
+      position: relative;
+    }
+    
+    section:last-child {
+      border: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    h2 {
+      font-size: 2.2rem;
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 6px;
+      margin-bottom: 1.5rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    p, ul {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+    
+    ul {
+      list-style: none;
+      margin: 0 0 1.2rem 0;
+      color: #ccc;
+    }
+    
+    ul li {
+      margin-bottom: .8rem;
+      position: relative;
+      padding-left: 1.8rem;
+    }
+    
+    ul li::before {
+      content: '•';
+      color: var(--primary-color);
+      font-size: 1.5rem;
+      position: absolute;
+      left: 0;
+      top: -3px;
+    }
+    
+    /* ======= معرض الصور ======= */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 15px;
+      margin-top: 1.5rem;
+    }
+    
+    .gallery img {
+      width: 100%;
+      height: 140px;
+      border-radius: 12px;
+      box-shadow: 0 0 8px rgba(0, 217, 255, 0.5);
+      cursor: pointer;
+      transition: transform .3s, box-shadow .3s;
+      object-fit: cover;
+    }
+    
+    .gallery img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px var(--primary-color);
+    }
+    
+    /* ======= مربع الضوء (Lightbox) ======= */
+    #lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.9);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      cursor: zoom-out;
+      transition: opacity .3s ease;
+    }
+    
+    #lightbox.show {
+      display: flex;
+      opacity: 1;
+    }
+    
+    #lightbox.hide {
+      opacity: 0;
+    }
+    
+    #lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 12px;
+      box-shadow: 0 0 30px var(--primary-color);
+    }
+    
+    /* ======= وصف المودات ======= */
+    .mod-item {
+      position: relative;
+      margin-bottom: 0.8rem;
+      background: rgba(0, 217, 255, 0.05);
+      padding: 0.8rem;
+      border-radius: 8px;
+      border-left: 3px solid var(--primary-color);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .mod-item:hover {
+      background: rgba(0, 217, 255, 0.1);
+    }
+    
+    .mod-item i {
+      margin-left: 0.5rem;
+      color: var(--primary-color);
+    }
+    
+    .mod-desc {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .4s ease, padding .4s ease;
+      background: #242424;
+      margin-top: 0.5rem;
+      border-radius: 8px;
+      padding: 0 1rem;
+    }
+    
+    .mod-desc.open {
+      max-height: 200px;
+      padding: 1rem;
+    }
+    
+    .mod-desc p {
+      color: #ddd;
+      margin: 0;
+      line-height: 1.7;
+    }
+    
+    /* ======= الأعضاء المميزون ======= */
+    .members-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    
+    .member-card {
+      background: rgba(0, 217, 255, 0.08);
+      border-radius: 10px;
+      padding: 1.2rem;
+      text-align: center;
+      border: 1px solid rgba(0, 217, 255, 0.2);
+      transition: all 0.3s;
+    }
+    
+    .member-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 217, 255, 0.2);
+    }
+    
+    .member-card i {
+      font-size: 2.5rem;
+      color: var(--primary-color);
+      margin-bottom: 0.8rem;
+    }
+    
+    .member-card h3 {
+      color: var(--primary-color);
+      font-size: 1.3rem;
+    }
+    
+    /* ======= اليوميات ======= */
+    .diary-entry {
+      background: rgba(0, 217, 255, 0.05);
+      border-radius: 10px;
+      padding: 1.2rem;
+      margin-bottom: 1rem;
+      border-left: 3px solid var(--primary-color);
+    }
+    
+    .diary-entry h3 {
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .diary-entry p {
+      color: #bbb;
+    }
+    
+    .diary-date {
+      color: var(--primary-color);
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      display: block;
+    }
+    
+    /* ======= التذييل ======= */
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      color: #888;
+      font-size: 0.9rem;
+      width: 100%;
+      max-width: 900px;
+      border-top: 1px solid var(--border-color);
+      margin-top: auto;
+    }
+    
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin: 1rem 0;
+    }
+    
+    .social-links a {
+      color: #bbb;
+      font-size: 1.5rem;
+      transition: all 0.3s;
+    }
+    
+    .social-links a:hover {
+      color: var(--primary-color);
+      transform: translateY(-3px);
+    }
+    
+    /* ======= التجاوب ======= */
+    @media (max-width: 768px) {
+      body {
+        padding-top: 240px;
+      }
+      
+      header {
+        height: 200px;
+      }
+      
+      nav {
+        top: 200px;
+      }
+      
+      nav.scrolled {
+        top: 0;
+      }
+      
+      header h1 {
+        font-size: 2rem;
+      }
+      
+      header img {
+        max-width: 100px;
+      }
+      
+      nav a {
+        font-size: 0.9rem;
+        padding: 6px 10px;
+      }
+      
+      h2 {
+        font-size: 1.8rem;
+      }
+      
+      main {
+        padding: 1.5rem;
+        margin-top: 90px;
+      }
+      
+      .gallery {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      }
+    }
+    
+    @media (max-width: 480px) {
+      body {
+        padding-top: 300px;
+      }
+      
+      header {
+        height: 260px;
+      }
+      
+      nav {
+        top: 260px;
+        gap: 0.5rem;
+      }
+      
+      nav.scrolled {
+        top: 0;
+      }
+      
+      nav a {
+        font-size: 0.8rem;
+        padding: 5px 8px;
+      }
+      
+      .admin-badges {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .gallery {
+        grid-template-columns: 1fr 1fr;
+      }
+      
+      .members-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- الترويسة -->
+  <header>
+    <div class="logo-container">
+      <img src="https://i.top4top.io/p_3446s1eaj0.jpg" alt="شعار سيرفر YF" />
+      <h1>YF-PORTAL</h1>
+      <div class="admin-badges">
+        <div class="admin-badge">👤 بوابتك إلى جميع سيرفرات YF الجديدة 🎮</div>
+      </div>
+    </div>
+  </header>
+  
+  <!-- شريط التنقل - تم التعديل لجعله ثابتًا -->
+  <nav id="main-nav">
+    <a href="#rules"><i class="fas fa-book"></i> القوانين</a>
+    <a href="#mods"><i class="fas fa-cogs"></i> المودات</a>
+    <a href="#members"><i class="fas fa-crown"></i> الأعضاء</a>
+    <a href="#gallery"><i class="fas fa-images"></i> الصور</a>
+    <a href="#diary"><i class="fas fa-book-open"></i> اليوميات</a>
+    <a href="https://t.me/yfgrup" target="_blank" rel="noopener" class="join-link">
+      <i class="fab fa-telegram"></i> انضم لنا
+    </a>
+  </nav>
+  
+  <!-- المحتوى الرئيسي -->
+  <main>
+    <!-- قسم القوانين -->
+    <section id="rules">
+      <h2><i class="fas fa-book"></i> 📜 قوانين الشات والسيرفر</h2>
+      <ul>
+        <li>ممنوع السب بشكل عام</li>
+        <li>ممنوع الترويج المباشر وغير المباشر</li>
+        <li>ممنوع الكلام 18+ أو نشر محتوى إباحي</li>
+        <li>ممنوع السبام بتكرار 5 مرات متتالية</li>
+        <li>ممنوع طلب رتبة = إنذار</li>
+        <li>ممنوع التخريب (مناطق، بيوت، ممتلكات)</li>
+        <li>ممنوع السب والشتم داخل السيرفر</li>
+        <li>القتال فقط خارج مناطق اللاعبين</li>
+        <li>ممنوع قتل أي شخص داخل منطقته أو بيته</li>
+        <li>إذا طُلب منك الخروج من بيت شخص، اخرج فورًا</li>
+        <li>ممنوع استخدام الهكر أو X-ray = طرد مباشر</li>
+        <li>ممنوع طلب أدوات من الإدارة ❌ "أين المتعة؟"</li>
+        <li>ممنوع الإساءة لأي دين</li>
+        <li>إذا تعرضت للسب، صوّر ولا ترد، تواصل مع الإدارة</li>
+      </ul>
+    </section>
+    
+    <!-- قسم المودات -->
+    <section id="mods">
+      <h2><i class="fas fa-cogs"></i> ⚙️ مودات السيرفر</h2>
+      <ul id="mods-list"></ul>
+    </section>
+    
+    <!-- قسم الأعضاء المميزون -->
+    <section id="members">
+      <h2><i class="fas fa-crown"></i> 💥 الأعضاء المميزون</h2>
+      <div class="members-grid" id="members-list"></div>
+    </section>
+    
+    <!-- قسم معرض الصور -->
+    <section id="gallery">
+      <h2><i class="fas fa-images"></i> 🏕️ معرض الصور</h2>
+      <div class="gallery" id="gallery-images"></div>
+    </section>
+    
+    <!-- قسم اليوميات -->
+    <section id="diary">
+      <h2><i class="fas fa-book-open"></i> 🌌 يوميات السيرفر</h2>
+      <div id="diary-list"></div>
+    </section>
+  </main>
+  
+  <!-- التذييل -->
+  <footer>
+    <p>YF-PORTAL © 2025 - جميع الحقوق محفوظة</p>
+    <div class="social-links">
+      <a href="#"><i class="fab fa-discord"></i></a>
+      <a href="#"><i class="fab fa-youtube"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+    </div>
+    <p>تم التطوير بواسطة فريق YF</p>
+  </footer>
+  
+  <!-- مربع الضوء (Lightbox) -->
+  <div id="lightbox"></div>
+  
+  <!-- السكريبتات -->
+  <script>
+    // البيانات
+    const mods = [
+      {title:"مود القفل 🔐", desc:"مود القفل هو الذي يحمي منطقتك من السرقة والتخريب"},
+      {title:"مود الوايبوينت 🧭", desc:"مود الوايبوينت يمكنك التنقل بالعالم ويمكن لصديقك استخدامها للانتقال إليك"},
+      {title:"مود نايت فيجن 🌙", desc:"مود النايت فجن وهو يسمح لك بالرؤية الليلية داخل الكهوف"},
+      {title:"مود المتجر 🛒", desc:"مود المتجر وهو مود لبيع أيتماتك وغراضك بالعملة التي تريدها مثل دايموند أو إيميرالد أو ذهب"},
+      {title:"مود اللغة العربية 🗣️", desc:"مود اللغة العربية هو مود يضيف للشات اللغة العربية ويصحح الأخطاء الإملائية في اللعبة في الشات"},
+      {title:"مود فن ماينر 🔨", desc:"مود فن ماينر هو مود يسمح لك بتكسير البلوكات بشكل أسرع خاصة مع الشجر بضربة واحدة"},
+      {title:"مود الهمر 🪓", desc:"مود الهمر وهو يضيف الهمر لتكسير الصخور بسرعة"},
+      {title:"وغيرها... ✨", desc:"قريبًا سيتم إضافة المزيد من المودات المميزة لتجربة لعب أفضل شدات 😎"}
+    ];
+    
+    const members = [
+      {name:"°•𝑌𝑂𝐔𝑆𝐸𝐹•°", role:"مؤسس السيرفر"},
+      {name:"مصطفى", role:"مطور المودات"},
+      {name:"كيلوا", role:"مدير المجتمع"},
+      {name:"حسين", role:"دعم فني"},
+      {name:"عباس", role:"ادمن  + مشرف"}
+    ];
+    
+    const galleryImages = [
+      "https://e.top4top.io/p_3445ny4ct2.jpg",
+      "https://c.top4top.io/p_34450q9sg0.jpg",
+      "https://f.top4top.io/p_34457mq2v3.jpg"
+    ];
+    
+    const diaryEntries = [
+      {event:"فعاليات مستمرة", date:"2025", desc:"فعاليات جديدة ومثيرة تنتظركم مع جوائز قيمة!"},
+      {event:"لا يوجد سرقة أو تخريب", date:"2025", desc:"تم تعزيز أنظمة الحماية لمنع أي محاولات سرقة أو تخريب في السيرفر"},
+      {event:"تاريخ الكروب", date:"2025", desc:"تم انشاء اول سيرفر بإسم سكاي كرافت في 2024/7/20"}
+    ];
+
+    // تهيئة الصفحة عند التحميل
+    document.addEventListener('DOMContentLoaded', () => {
+      // تعبئة المودات
+      const modsList = document.getElementById('mods-list');
+      mods.forEach(mod => {
+        const li = document.createElement('li'); 
+        li.classList.add('mod-item'); 
+        li.innerHTML = `${mod.title} <i class="fas fa-chevron-down"></i>`;
+        
+        const descDiv = document.createElement('div'); 
+        descDiv.classList.add('mod-desc');
+        const p = document.createElement('p'); 
+        p.textContent = mod.desc; 
+        descDiv.appendChild(p);
+        
+        li.appendChild(descDiv);
+        li.addEventListener('click', () => {
+          // إغلاق جميع المودات الأخرى
+          document.querySelectorAll('.mod-desc').forEach(d => {
+            if(d !== descDiv) d.classList.remove('open');
+          });
+          // فتح/إغلاق المود الحالي
+          descDiv.classList.toggle('open');
+        });
+        
+        modsList.appendChild(li);
+      });
+
+      // تعبئة الأعضاء
+      const membersList = document.getElementById('members-list');
+      members.forEach(member => {
+        const memberCard = document.createElement('div');
+        memberCard.classList.add('member-card');
+        memberCard.innerHTML = `
+          <i class="fas fa-user"></i>
+          <h3>${member.name}</h3>
+          <p>${member.role}</p>
+        `;
+        membersList.appendChild(memberCard);
+      });
+
+      // تعبئة معرض الصور
+      const galleryDiv = document.getElementById('gallery-images');
+      galleryImages.forEach(src => {
+        const img = document.createElement('img'); 
+        img.src = src; 
+        img.alt = 'صورة من السيرفر';
+        img.addEventListener('click', () => openLightbox(src));
+        galleryDiv.appendChild(img);
+      });
+
+      // تعبئة اليوميات
+      const diaryList = document.getElementById('diary-list');
+      diaryEntries.forEach(entry => {
+        const entryDiv = document.createElement('div');
+        entryDiv.classList.add('diary-entry');
+        entryDiv.innerHTML = `
+          <h3><i class="fas fa-calendar-day"></i> ${entry.event}</h3>
+          <p>${entry.desc}</p>
+          <span class="diary-date"><i class="far fa-clock"></i> ${entry.date}</span>
+        `;
+        diaryList.appendChild(entryDiv);
+      });
+      
+      // إضافة حدث التمرير لإخفاء الترويسة عند التمرير لأسفل
+      const header = document.querySelector('header');
+      const nav = document.getElementById('main-nav');
+      const headerHeight = header.offsetHeight;
+      let lastScroll = 0;
+      
+      window.addEventListener('scroll', () => {
+        const currentScroll = window.scrollY;
+        
+        if (currentScroll > lastScroll && currentScroll > 100) {
+          // التمرير لأسفل - إخفاء الترويسة وتثبيت الشريط أعلى الصفحة
+          header.style.transform = 'translateY(-100%)';
+          nav.style.top = '10px';
+          nav.classList.add('scrolled');
+        } else if (currentScroll <= 100) {
+          // عند الوصول إلى أعلى الصفحة - إعادة كل شيء إلى وضعه الأصلي
+          header.style.transform = 'translateY(0)';
+          nav.style.top = `${headerHeight}px`;
+          nav.classList.remove('scrolled');
+        } else {
+          // التمرير لأعلى (ولكن ليس في أعلى الصفحة) - إظهار الترويسة مع تثبيت الشريط أسفلها
+          header.style.transform = 'translateY(0)';
+          nav.style.top = `${headerHeight}px`;
+          nav.classList.remove('scrolled');
+        }
+        
+        lastScroll = currentScroll;
+      });
+    });
+
+    // فتح مربع الضوء
+    function openLightbox(src) {
+      const lightbox = document.getElementById('lightbox');
+      lightbox.innerHTML = `<img src="${src}" alt="تكبير الصورة" />`;
+      lightbox.classList.add('show');
+      
+      // إغلاق عند الضغط على ESC
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          lightbox.classList.remove('show');
+        }
+      });
+    }
+
+    // إغلاق مربع الضوء
+    document.getElementById('lightbox').addEventListener('click', e => {
+      if (e.target.id === 'lightbox') {
+        e.currentTarget.classList.remove('show');
+      }
+    });
+  </script>
+</body>
+</html>
